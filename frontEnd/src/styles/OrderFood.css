@@ -1,0 +1,151 @@
+.order-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  gap: 2rem;
+  background-color: #0D1117;
+  color: #C9D1D9;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.order-container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.food-details-col {
+  flex: 1.5;
+  background-color: #161B22;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 209, 217, 0.1);
+}
+
+.food-details-col h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  margin: 0 0 1rem;
+}
+
+.food-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  /* keep video visually aligned with page content */
+  aspect-ratio: 16 / 9;
+  max-height: 420px; /* prevents the video from becoming too tall on wide screens */
+  height: auto;
+  object-fit: cover; /* fills the box while preserving aspect ratio */
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .food-image {
+    max-height: 260px; /* smaller cap on mobile */
+  }
+}
+
+.food-description {
+  font-size: 1rem;
+  color: #8B949E;
+  line-height: 1.6;
+}
+
+.billing-details-col {
+  flex: 1;
+}
+
+.order-summary, .payment-options {
+  background-color: #161B22;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 209, 217, 0.1);
+  margin-bottom: 2rem;
+}
+
+.order-summary h3, .payment-options h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem;
+  border-bottom: 1px solid rgba(201, 209, 217, 0.1);
+  padding-bottom: 1rem;
+}
+
+.billing-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.billing-item span:first-child {
+  color: #8B949E;
+}
+
+.billing-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(201, 209, 217, 0.1);
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgba(201, 209, 217, 0.1);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-method:hover, .payment-method.selected {
+  background-color: rgba(88, 166, 255, 0.1);
+  border-color: #58A6FF;
+}
+
+.payment-method input[type="radio"] {
+  margin-right: 1rem;
+}
+
+.confirm-order-btn {
+  width: 100%;
+  padding: 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0D1117;
+  background-color: #58A6FF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-order-btn:hover {
+  background-color: #79b8ff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(88, 166, 255, 0.2);
+}
+
+.final-price {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #C9D1D9;
+}
+
+@media (max-width: 992px) {
+  .order-container {
+    flex-direction: column;
+  }
+}

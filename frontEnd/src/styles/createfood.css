@@ -1,0 +1,121 @@
+/* createfood.css - styles for CreateFood page, responsive and theme-aware */
+.create-food-page {
+  /* Mobile-first defaults */
+  max-width: 920px;
+  margin: 16px auto;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px var(--shadow, rgba(0,0,0,0.08));
+  background: var(--secondary-color, #fff);
+  color: var(--text-color, #111);
+  transition: background 200ms ease, color 200ms ease, padding 160ms ease;
+}
+
+.create-food-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* stack on mobile */
+  gap: 14px;
+}
+
+.create-food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-color, #555);
+  opacity: 0.85;
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row textarea,
+.form-row input[type="url"] {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--input-bg, #fff);
+  color: var(--text-color, #111);
+  outline: none;
+}
+
+.form-row textarea { min-height: 120px; resize: vertical; }
+
+.file-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.file-drop {
+  width: 100%;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px dashed var(--border-color, #cfcfcf);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.01));
+  cursor: pointer;
+}
+.file-drop.dragover {
+  border-color: var(--primary-color, #4a90e2);
+  box-shadow: 0 6px 18px rgba(74,144,226,0.12);
+  transform: translateY(-2px);
+}
+.file-drop-inner { display:flex; align-items:center }
+.file-drop svg { color: var(--primary-color, #4a90e2) }
+.file-info { display:flex; flex-direction:column }
+
+.file-drop:focus, .file-drop:hover { outline: none; }
+
+
+.btn-group { display:flex; gap:8px; margin-top:8px; flex-direction:column; }
+
+.btn { padding:12px 14px; border-radius:10px; cursor:pointer; border:none; font-weight:600; width:100% }
+.btn.primary { background: linear-gradient(90deg,#ff7a18,#ffb347); color:#fff }
+.btn.ghost { background:transparent; border:1px solid var(--border-color, rgba(0,0,0,0.08)) }
+
+.preview-card {
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--secondary-color, rgba(255,255,255,0.02));
+  display:flex; flex-direction:column; gap:10px; align-items:center; justify-content:flex-start;
+  min-height: 200px;
+}
+
+.preview-video, .preview-thumb {
+  width:100%; height:200px; object-fit:cover; border-radius:8px; background:transparent;
+}
+
+.placeholder-text { color:var(--text-color,#777); opacity:0.7; font-size:14px }
+
+/* Use global theme variables defined in theme.css ( :root and :root[data-theme="dark"] )
+   so this page follows the app-wide light/dark toggle. */
+
+/* responsive */
+/* Tablet and up: two-column layout (form + preview) */
+@media (min-width: 640px) {
+  .create-food-page { padding: 20px; }
+  .create-food-grid { grid-template-columns: 1fr 320px; gap:18px; }
+  .btn-group { flex-direction: row; }
+  .btn { width: auto; min-width: 120px }
+  .preview-video, .preview-thumb { height:220px }
+}
+
+/* Desktop: slightly larger preview and spacing */
+@media (min-width: 980px) {
+  .create-food-page { padding: 24px; }
+  .create-food-grid { grid-template-columns: 1fr 360px; gap:20px; }
+  .preview-video, .preview-thumb { height:260px }
+}
+
+/* small play icon overlay for previews */
+.play-overlay { position:relative }
+.play-overlay::after { content:'▶'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:40px; color:rgba(255,255,255,0.85); text-shadow:0 2px 8px rgba(0,0,0,0.6) }

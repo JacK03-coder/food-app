@@ -1,0 +1,238 @@
+.partner-page {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.partner-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border-left: 6px solid var(--primary-color, #ff4d4d); /* accent */
+}
+
+.partner-top {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.partner-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ddd;
+}
+
+.partner-photo {
+  border: 3px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.partner-meta {
+  flex: 1;
+}
+
+.partner-name {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-color, #222);
+}
+
+.partner-address {
+  margin: 6px 0 0 0;
+  color: var(--text-color, #555);
+}
+
+.partner-stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat {
+  flex: 1;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.stat-number {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-color, #666);
+}
+
+.meals-grid {
+  display: grid;
+  /* larger thumbnails by default: two columns for more prominent tiles */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* visual divider between header and grid */
+.partner-header + .meals-grid,
+.partner-header + .section-divider + .meals-grid {
+  margin-top: 10px;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  margin: 12px 0;
+  border-radius: 2px;
+}
+
+.meal-card {
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(255,255,255,0.02));
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.meal-thumb {
+  width: 100%;
+  /* make the thumbnail square and larger */
+  padding-top: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* inline video player used for active card */
+.meal-player {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #000;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+.meal-title {
+  padding: 8px;
+  font-size: 0.95rem;
+  color: var(--text-color, #222);
+  text-align: center;
+}
+
+.meal-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.18) 100%);
+  pointer-events: none;
+}
+
+.meal-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.24);
+}
+
+/* Dark variant for this page only */
+.partner-page.dark {
+  background: var(--bg-color, #111);
+}
+
+.partner-page.dark .partner-header {
+  background: rgba(255,255,255,0.03);
+}
+
+.partner-page.dark .partner-name,
+.partner-page.dark .meal-title,
+.partner-page.dark .partner-address,
+.partner-page.dark .stat-label,
+.partner-page.dark .stat-number {
+  color: var(--text-color, #fff);
+}
+
+.partner-page.dark .partner-photo {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6) inset;
+}
+
+.partner-page.dark .stat {
+  background: rgba(255,255,255,0.03);
+}
+
+.partner-page.dark .meal-card {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .partner-page { padding: 12px; }
+  .partner-photo { width: 72px; height: 72px; }
+  .meals-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+@media (min-width: 900px) {
+  .meals-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+}
+
+/* Modal & play overlay styles */
+.meal-card { cursor: pointer; }
+.meal-thumb { position: relative; }
+/* removed play-overlay to keep clean thumbnails like Instagram/TikTok profiles */
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 20px;
+}
+.video-modal-content {
+  width: min(980px, 96%);
+  max-height: calc(100vh - 60px);
+  background: var(--modal-bg, rgba(6,6,6,0.95));
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.modal-video {
+  width: 100%;
+  max-height: 60vh;
+  background: #000;
+  display: block;
+}
+
+.modal-info {
+  padding: 12px 14px 18px;
+  color: var(--muted-text, #ccc);
+}
+.modal-title { margin: 0 0 6px; color: var(--text-color, #fff); font-size: 1.05rem; }
+.modal-desc { margin: 0; font-size: 0.95rem; line-height: 1.4; color: var(--muted-text, #ddd); }
