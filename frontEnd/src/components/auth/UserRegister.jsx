@@ -51,6 +51,7 @@ const UserRegister = () => {
             name="name"
             className="form-input"
             placeholder="Enter your name"
+            autoComplete="name"
             value={formData.name}
             onChange={handleChange}
           />
@@ -63,6 +64,7 @@ const UserRegister = () => {
             name="email"
             className="form-input"
             placeholder="Enter your email"
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
           />
@@ -75,6 +77,7 @@ const UserRegister = () => {
             name="password"
             className="form-input"
             placeholder="Enter your password"
+            autoComplete="new-password"
             value={formData.password}
             onChange={handleChange}
           />

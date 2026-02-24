@@ -61,6 +61,7 @@ const FoodPartnerRegister = () => {
             name="name"
             className="form-input"
             placeholder="Enter business name"
+            autoComplete="organization"
             value={formData.name}
             onChange={handleChange}
           />
@@ -73,6 +74,7 @@ const FoodPartnerRegister = () => {
             name="contactName"
             className="form-input"
             placeholder="Enter contact person name"
+            autoComplete="name"
             value={formData.contactName}
             onChange={handleChange}
           />
@@ -85,6 +87,7 @@ const FoodPartnerRegister = () => {
             name="phone"
             className="form-input"
             placeholder="Enter phone number"
+            autoComplete="tel"
             value={formData.phone}
             onChange={handleChange}
           />
@@ -97,6 +100,7 @@ const FoodPartnerRegister = () => {
             className="form-input"
             placeholder="Enter business address"
             rows="3"
+            autoComplete="street-address"
             value={formData.address}
             onChange={handleChange}
           />
@@ -109,6 +113,7 @@ const FoodPartnerRegister = () => {
             name="email"
             className="form-input"
             placeholder="Enter email"
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
           />
@@ -121,6 +126,7 @@ const FoodPartnerRegister = () => {
             name="password"
             className="form-input"
             placeholder="Enter your password"
+            autoComplete="new-password"
             value={formData.password}
             onChange={handleChange}
           />

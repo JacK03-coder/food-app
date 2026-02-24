@@ -47,6 +47,7 @@ const FoodPartnerLogin = () => {
             name="email"
             className="form-input"
             placeholder="Enter your email"
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
           />
@@ -59,6 +60,7 @@ const FoodPartnerLogin = () => {
             name="password"
             className="form-input"
             placeholder="Enter your password"
+            autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
           />
