@@ -14,10 +14,14 @@ const app = express();
 const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
 const backendURL =
   process.env.BACKEND_URL || "https://food-app-backend-r8v9.onrender.com";
-const allowedOrigins = (process.env.CORS_ORIGINS || `${frontendURL},${backendURL}`)
+const localDevOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+const configuredOrigins = (process.env.CORS_ORIGINS || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+const allowedOrigins = Array.from(
+  new Set([frontendURL, backendURL, ...localDevOrigins, ...configuredOrigins])
+);
 const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS !== "false";
 
 function isAllowedOrigin(origin) {
