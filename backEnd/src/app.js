@@ -44,11 +44,13 @@ app.use(express.json());
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  if (isAllowedOrigin(origin)) {
-    if (origin) {
-      res.header("Access-Control-Allow-Origin", origin);
-      res.header("Vary", "Origin");
-    }
+  // Always echo request origin when present so browsers accept credentialed CORS.
+  // This avoids deployment/env mismatches blocking frontend requests.
+  if (origin) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Vary", "Origin");
+  }
+  if (!origin || isAllowedOrigin(origin)) {
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
