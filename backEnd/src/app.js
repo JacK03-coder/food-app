@@ -18,12 +18,32 @@ const allowedOrigins = (process.env.CORS_ORIGINS || `${frontendURL},${backendURL
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS !== "false";
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+
+  if (allowVercelPreviews) {
+    try {
+      const host = new URL(origin).hostname;
+      if (host.endsWith(".vercel.app")) return true;
+    } catch {
+      return false;
+    }
+  }
+
+  return false;
+}
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) return callback(null, true);
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   })
 );

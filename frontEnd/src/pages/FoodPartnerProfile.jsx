@@ -38,9 +38,9 @@ const FoodPartnerProfile = () => {
         vid.src = url;
 
         const cleanup = () => {
-          try { vid.pause(); } catch (e) {}
-          try { vid.removeAttribute('src'); } catch (e) {}
-          try { vid.load && vid.load(); } catch (e) {}
+          try { vid.pause(); } catch { /* ignore cleanup error */ }
+          try { vid.removeAttribute('src'); } catch { /* ignore cleanup error */ }
+          try { vid.load && vid.load(); } catch { /* ignore cleanup error */ }
         };
 
         const onError = () => {
@@ -65,7 +65,7 @@ const FoodPartnerProfile = () => {
                 const dataURL = canvas.toDataURL('image/jpeg');
                 cleanup();
                 resolve(dataURL);
-              } catch (err) {
+              } catch {
                 cleanup();
                 resolve(null);
               }
@@ -76,12 +76,12 @@ const FoodPartnerProfile = () => {
 
             // Fallback timeout in case seeked doesn't fire
             setTimeout(() => resolve(null), 2000);
-          } catch (err) {
+          } catch {
             cleanup();
             resolve(null);
           }
         }, { once: true });
-      } catch (err) {
+      } catch {
         resolve(null);
       }
     });
@@ -90,7 +90,6 @@ const FoodPartnerProfile = () => {
   // When videos list changes, try to generate thumbnails for items without explicit images/posters.
   useEffect(() => {
     let cancelled = false;
-    const pending = [];
 
     const process = async () => {
       const map = {};
@@ -107,7 +106,6 @@ const FoodPartnerProfile = () => {
         // push promise into pending to keep track
         // but await each to limit concurrency
         // best-effort; if fails we'll leave it out
-        // eslint-disable-next-line no-await-in-loop
         const thumb = await generateThumbnailFromVideo(src);
         if (cancelled) return;
         if (thumb) map[idKey] = thumb;
@@ -121,8 +119,7 @@ const FoodPartnerProfile = () => {
     process();
 
     return () => { cancelled = true; };
-    // intentionally not adding videoThumbnails to deps to avoid loops
-  }, [videos]);
+  }, [videos, videoThumbnails]);
 
   // When modal opens, pick a poster: explicit image/poster/thumbnail map or try to generate one for this item.
   useEffect(() => {

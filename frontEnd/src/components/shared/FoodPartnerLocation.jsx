@@ -109,6 +109,7 @@ const FoodPartnerLocationSetup = () => {
           ) : (
             <>No coordinates</>
           )}
+          {saved && <div>Location saved successfully.</div>}
         </div>
         <div>
           <button className="btn primary" onClick={saveLocation} disabled={loading || !location}>

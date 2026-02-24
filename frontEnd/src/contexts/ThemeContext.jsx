@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-const ThemeContext = createContext();
-export const useTheme = () => useContext(ThemeContext);
+import React, { useEffect, useState } from 'react';
+import { ThemeContext } from './theme-context';
 
 const STORAGE_KEY = 'theme';
 
@@ -10,7 +8,7 @@ export const ThemeProvider = ({ children }) => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'light' || stored === 'dark') return stored;
-    } catch (e) {
+    } catch {
       // ignore
     }
     if (typeof window !== 'undefined' && window.matchMedia) {
@@ -25,7 +23,9 @@ export const ThemeProvider = ({ children }) => {
     document.documentElement.setAttribute('data-theme', theme);
     try {
       localStorage.setItem(STORAGE_KEY, theme);
-    } catch (e) {}
+    } catch {
+      // ignore storage write failures
+    }
   }, [theme]);
 
   // Keep in sync with system preference only if user hasn't explicitly chosen
@@ -33,7 +33,7 @@ export const ThemeProvider = ({ children }) => {
     let mq;
     try {
       mq = window.matchMedia('(prefers-color-scheme: dark)');
-    } catch (e) {
+    } catch {
       mq = null;
     }
     const handleChange = (e) => {
@@ -41,7 +41,7 @@ export const ThemeProvider = ({ children }) => {
       let currentStored = null;
       try {
         currentStored = localStorage.getItem(STORAGE_KEY);
-      } catch (err) {
+      } catch {
         currentStored = null;
       }
       if (currentStored !== 'light' && currentStored !== 'dark') {
@@ -73,4 +73,3 @@ export const ThemeProvider = ({ children }) => {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export default ThemeContext;

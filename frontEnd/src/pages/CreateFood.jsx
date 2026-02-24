@@ -28,7 +28,9 @@ const CreateFood = () => {
     if (videoFile && preview && preview.startsWith("blob:")) {
       try {
         URL.revokeObjectURL(preview);
-      } catch (e) {}
+      } catch {
+        // ignore stale object URL cleanup errors
+      }
     }
     setVideoFile(f);
     const url = URL.createObjectURL(f);
@@ -69,7 +71,9 @@ const CreateFood = () => {
     if (videoFile && preview && preview.startsWith("blob:")) {
       try {
         URL.revokeObjectURL(preview);
-      } catch (e) {}
+      } catch {
+        // ignore stale object URL cleanup errors
+      }
     }
     setVideoFile(null);
     setPreview("");
