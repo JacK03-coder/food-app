@@ -10,6 +10,9 @@ async function authFoodPartnerMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role && decoded.role !== "foodpartner") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
     const foodPartnerId = decoded._id || decoded.id;
     const foodPartner = await foodPartnerModel.findById(foodPartnerId);
 
@@ -32,6 +35,9 @@ async function authUserMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role && decoded.role !== "user") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
     const userId = decoded._id || decoded.id;
     const user = await userModel.findById(userId);
 

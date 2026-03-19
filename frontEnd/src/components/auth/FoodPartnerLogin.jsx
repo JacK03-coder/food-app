@@ -4,6 +4,7 @@ import '../../styles/auth.css';
 import AuthTypeToggle from '../shared/AuthTypeToggle';
 import { useNavigate } from 'react-router-dom';
 import { api } from "../../lib/api";
+import { saveSession } from "../../lib/session";
 
 const FoodPartnerLogin = () => {
   const navigate = useNavigate();
@@ -25,9 +26,14 @@ const FoodPartnerLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    await api.post("/api/auth/foodpartner/login",{
+    const response = await api.post("/api/auth/foodpartner/login",{
       email,
       password
+    });
+
+    saveSession({
+      role: "foodpartner",
+      foodPartner: response.data.foodPartner,
     });
   
     navigate('/partner-profile');

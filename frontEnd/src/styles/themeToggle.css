@@ -1,5 +1,5 @@
 .theme-toggle-btn {
-  background: var(--secondary-color);
+  background: var(--surface-elevated);
   color: var(--text-color);
   border: 1px solid var(--border-color);
   border-radius: 50%;
@@ -14,10 +14,12 @@
   top: calc(12px + env(safe-area-inset-top));
   right: 12px;
   z-index: 1100;
-  transition: background 0.25s, color 0.25s;
+  box-shadow: 0 12px 28px var(--shadow);
+  transition: background 0.25s, color 0.25s, transform 0.25s ease;
 }
 
 .theme-toggle-btn:hover {
   background: var(--primary-color);
-  color: #fff;
+  color: var(--hero-text);
+  transform: translateY(-1px);
 }

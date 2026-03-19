@@ -4,6 +4,7 @@ import '../../styles/auth.css';
 import AuthTypeToggle from '../shared/AuthTypeToggle';
 import { useNavigate } from 'react-router-dom';
 import { api } from "../../lib/api";
+import { saveSession } from "../../lib/session";
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const FoodPartnerRegister = () => {
       password, 
       address,
       email
+    });
+
+    saveSession({
+      role: "foodpartner",
+      foodPartner: response.data.foodPartner,
     });
 
     const partnerId = response.data.foodPartner._id;

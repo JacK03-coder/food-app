@@ -1,5 +1,6 @@
 const foodPartnerModel = require("../models/foodpartner.model");
 const foodModel = require("../models/food.model");
+const orderModel = require("../models/order.model");
 
 async function getfoodPartnerById(req, res) {
   try {
@@ -13,12 +14,18 @@ async function getfoodPartnerById(req, res) {
     const foodItemsByFoodPartner = await foodModel.find({
       foodPartner: foodPartnerId,
     });
+    const deliveredOrders = await orderModel.countDocuments({
+      foodPartner: foodPartnerId,
+      status: "delivered",
+    });
 
     return res.status(200).json({
       message: "Food Partner fetched successfully",
       foodPartner: {
         ...foodPartner.toObject(),
         foodItems: foodItemsByFoodPartner,
+        totalMeals: foodItemsByFoodPartner.length,
+        customerServed: deliveredOrders,
       },
     });
   } catch (error) {

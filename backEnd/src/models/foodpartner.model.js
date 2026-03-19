@@ -7,6 +7,11 @@ const foodPartnerSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   address: { type: String, required: true },
   password: { type: String },
+  description: { type: String, default: "" },
+  cuisineTags: { type: [String], default: [] },
+  openingHours: { type: String, default: "" },
+  avatarUrl: { type: String, default: "" },
+  coverImageUrl: { type: String, default: "" },
   location: {
     type: {
       type: String,
@@ -18,6 +23,8 @@ const foodPartnerSchema = new mongoose.Schema({
       default:[0,0]
     },
   },
+}, {
+  timestamps: true,
 });
 
 foodPartnerSchema.index({location: "2dsphere"});  //Enabling geospatial queries 

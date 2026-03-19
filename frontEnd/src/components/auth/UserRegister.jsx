@@ -4,6 +4,7 @@ import "../../styles/auth.css";
 import AuthTypeToggle from "../shared/AuthTypeToggle";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
+import { saveSession } from "../../lib/session";
 
 const UserRegister = () => {
   const navigate = useNavigate();
@@ -27,12 +28,16 @@ const UserRegister = () => {
     const email = e.target.email.value; 
     const password = e.target.password.value;
 
-    await api.post("/api/auth/user/register",{
+    const response = await api.post("/api/auth/user/register",{
       fullName,
       email,
       password
     });
 
+    saveSession({
+      role: "user",
+      user: response.data.user,
+    });
   
     navigate("/user-profile");
   };

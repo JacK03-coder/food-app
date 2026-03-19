@@ -4,6 +4,7 @@ import '../../styles/themeToggle.css';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
+
   return (
     <button
       aria-label="Toggle theme"
@@ -11,10 +12,9 @@ const ThemeToggle = () => {
       className="theme-toggle-btn"
       onClick={toggleTheme}
     >
-      {theme === 'light' ? '🌙' : '☀️'}
+      {theme === 'light' ? '◐' : '○'}
     </button>
   );
 };
 
 export default ThemeToggle;
-  

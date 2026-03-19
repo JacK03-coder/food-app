@@ -7,7 +7,11 @@ const crypto = require("crypto");
 const authRouters = require("./routes/auth.routes");
 const foodRouter = require("./routes/food.routes");
 const foodPartnerRouter = require("./routes/food-partner.routes");
+const orderRouter = require("./routes/order.routes");
 const payment = require("./models/razorpay.model");
+const orderModel = require("./models/order.model");
+const foodModel = require("./models/food.model");
+const authMiddleware = require("./middlewares/auth.middleware");
 
 const app = express();
 const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
@@ -70,6 +74,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouters);
 app.use("/api/food", foodRouter);
 app.use("/api/foodpartner", foodPartnerRouter);
+app.use("/api/orders", orderRouter);
 
 
 
@@ -100,6 +105,7 @@ async function verifyRazorpayPayment(req, res) {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
+    const { foodId, pricing = {}, deliveryAddress = "", redirect = false } = req.body;
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
@@ -108,12 +114,59 @@ async function verifyRazorpayPayment(req, res) {
     const isAuth = expectedSignature === razorpay_signature;
 
     if (isAuth) {
-      await payment.create({
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
+      const existingPayment = await payment.findOne({ razorpay_payment_id });
+      if (!existingPayment) {
+        await payment.create({
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+        });
+      }
+
+      let createdOrder = await orderModel.findOne({
+        "payment.razorpayPaymentId": razorpay_payment_id,
       });
-      return res.redirect(`${frontendURL}/payment/success`);
+
+      if (!createdOrder && req.user && foodId) {
+        const foodItem = await foodModel.findById(foodId);
+
+        if (!foodItem) {
+          return res.status(404).json({ success: false, message: "Food item not found" });
+        }
+
+        createdOrder = await orderModel.create({
+          user: req.user._id,
+          food: foodItem._id,
+          foodPartner: foodItem.foodPartner,
+          foodName: foodItem.name,
+          partnerName: foodItem.foodPartnername || "Food Partner",
+          pricing: {
+            itemTotal: Number(pricing.itemTotal || foodItem.price),
+            platformCharge: Number(pricing.platformCharge || 0),
+            deliveryCharge: Number(pricing.deliveryCharge || 0),
+            totalAmount: Number(pricing.totalAmount || foodItem.price),
+          },
+          deliveryAddress:
+            deliveryAddress || req.user.address || "Address not added yet",
+          payment: {
+            razorpayOrderId: razorpay_order_id,
+            razorpayPaymentId: razorpay_payment_id,
+            razorpaySignature: razorpay_signature,
+          },
+          status: "ordered",
+          statusHistory: [{ status: "ordered", note: "Payment verified" }],
+        });
+      }
+
+      if (redirect) {
+        return res.redirect(`${frontendURL}/payment/success`);
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Payment verified successfully",
+        order: createdOrder,
+      });
     } else {
       return res.status(400).json({ success: false, message: "Invalid signature" });
     }
@@ -123,7 +176,7 @@ async function verifyRazorpayPayment(req, res) {
   }
 }
 
-app.post("/api/verify-razorpay/payment", verifyRazorpayPayment);
+app.post("/api/verify-razorpay/payment", authMiddleware.authUserMiddleware, verifyRazorpayPayment);
 
 // Keep old typo-prone route for backward compatibility with existing clients.
 app.post("/api/razorpay/verify", verifyRazorpayPayment);
